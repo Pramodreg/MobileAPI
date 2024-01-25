@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barrie Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  
+</head>
+<body>
+    <p id="coordinates">Coordinates</p>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  var map = L.map('map').setView([44.3894, -79.6903], 13); //setting initial center and zoom level 
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+  }).addTo(map);
+
+  var marker = L.marker([44.3894, -79.6903]).addTo(map);
+
+  marker.bindPopup("<b>Welcome to Maps</b>").openPopup(); // To show the popup using openPopup method
+  
+
+  var mapcoordinates = document.getElementById('coordinates');
+
+  function onClickLocation(l) {
+    mapcoordinates.innerHTML = "Latitude: " + l.latlng.lat + "<br>Longitude: " + l.latlng.lng; //Getting the coordinate value on p tag
+  }
+
+  map.on('click', onClickLocation);
+</script>
+
+
+<!--Giving some style to webpage-->
+<style>
+    #map {
+        margin: auto;
+      height: 300px;
+      width: 800px;
+      display: flex;
+      align-content: center;      
+    }
+    p{
+        text-align: center;
+    }
+  </style>
+
+</body>
+</html>
