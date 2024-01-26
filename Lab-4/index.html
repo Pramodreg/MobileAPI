@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISS Location</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+  <div>
+    <p>Group3:Pramod Regmi</p>
+    <p id="coordinates">Latitude: 0, Longitude: 0</p>
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    var map = L.map('map').setView([0, 0], 8); // setting initial center and medium zoom
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 5,
+    }).addTo(map);
+
+    var marker = L.marker([0, 0]).addTo(map);
+
+    function getLocation() {
+      fetch('https://api.wheretheiss.at/v1/satellites/25544') //Getting ISS location
+        .then(response => response.json())
+        .then(data => {
+          var lat = data.latitude;
+          var lon = data.longitude;
+
+          marker.setLatLng([lat, lon]);
+
+          document.getElementById('coordinates').innerHTML = "Latitude: " + lat + ", Longitude: " + lon; // setting coordinates in an element
+        })
+        .catch(error => console.error('Error getting ISS location:', error));
+    }
+    getLocation(); // calling function
+
+    
+    setTimeInterval(getLocation, 5000);
+  </script>
+
+  <!-- Giving some style to the webpage -->
+  <style>
+    #map {
+      margin: auto;
+      height: 300px;
+      width: 800px;
+      display: flex;
+      align-content: center;
+    }
+
+    p {
+      text-align: center;
+    }
+  </style>
+
+</body>
+
+</html>
